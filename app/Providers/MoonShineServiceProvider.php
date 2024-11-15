@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\MoonShine\Resources\ActivityResource;
+use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\NewsResource;
 use App\MoonShine\Resources\RegulatoryDocumentItemResource;
 use App\MoonShine\Resources\RegulatoryDocumentResource;
@@ -43,6 +45,10 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
     {
         return [
             MenuItem::make(
+                static fn() => __("Kategoriyalar"),
+                new CategoryResource()
+            ),
+            MenuItem::make(
                 static fn() => __('Yangiliklar'),
                 new NewsResource()
             ),
@@ -53,6 +59,10 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             MenuItem::make(
                 static fn() => __("Me'yoriy hujjatlar"),
                 new RegulatoryDocumentItemResource()
+            ),
+            MenuItem::make(
+                static fn() => __("Faoliyatlar"),
+                new ActivityResource()
             ),
 
             MenuItem::make('Documentation', 'https://moonshine-laravel.com/docs')

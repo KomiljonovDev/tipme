@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\News;
+use App\Models\Activity;
 
-use MoonShine\Fields\Image;
-use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
 use MoonShine\Fields\Textarea;
 use MoonShine\Resources\ModelResource;
@@ -18,13 +16,13 @@ use MoonShine\Fields\Field;
 use MoonShine\Components\MoonShineComponent;
 
 /**
- * @extends ModelResource<News>
+ * @extends ModelResource<Activity>
  */
-class NewsResource extends ModelResource
+class ActivityResource extends ModelResource
 {
-    protected string $model = News::class;
+    protected string $model = Activity::class;
 
-    protected string $title = 'News';
+    protected string $title = 'Activities';
 
     /**
      * @return list<MoonShineComponent|Field>
@@ -33,18 +31,15 @@ class NewsResource extends ModelResource
     {
         return [
             Block::make([
-                ID::make()->sortable()->required(),
-                BelongsTo::make('category'),
-                Text::make('Sarlavha','title')->required(),
-                Textarea::make('Description', 'description')
-                    ->hideOnIndex()->required(),
-                Image::make('Rasm', 'image')->required()
+                ID::make()->sortable(),
+                Text::make('Name')->required(),
+                Textarea::make('Description')->required(),
             ]),
         ];
     }
 
     /**
-     * @param News $item
+     * @param Activity $item
      *
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
