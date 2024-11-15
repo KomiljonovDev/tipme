@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\News;
+use App\Models\RegulatoryDocument;
 
-use MoonShine\Fields\Image;
 use MoonShine\Fields\Text;
-use MoonShine\Fields\Textarea;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
@@ -17,13 +15,13 @@ use MoonShine\Fields\Field;
 use MoonShine\Components\MoonShineComponent;
 
 /**
- * @extends ModelResource<News>
+ * @extends ModelResource<RegulatoryDocument>
  */
-class NewsResource extends ModelResource
+class RegulatoryDocumentResource extends ModelResource
 {
-    protected string $model = News::class;
+    protected string $model = RegulatoryDocument::class;
 
-    protected string $title = 'News';
+    protected string $title = 'RegulatoryDocuments';
 
     /**
      * @return list<MoonShineComponent|Field>
@@ -32,17 +30,14 @@ class NewsResource extends ModelResource
     {
         return [
             Block::make([
-                ID::make()->sortable()->required(),
-                Text::make('Sarlavha','title')->required(),
-                Textarea::make('Description', 'description')
-                    ->hideOnIndex()->required(),
-                Image::make('Rasm', 'image')->required()
+                ID::make()->sortable(),
+                Text::make('Name')->required(),
             ]),
         ];
     }
 
     /**
-     * @param News $item
+     * @param RegulatoryDocument $item
      *
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
