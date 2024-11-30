@@ -12,7 +12,7 @@ class RegulatoryDocumentController extends Controller
      */
     public function index()
     {
-        //
+        return RegulatoryDocument::with('regulatory_document_items')->get();
     }
 
     /**
