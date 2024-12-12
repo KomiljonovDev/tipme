@@ -12,7 +12,22 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        return Activity::all();
+        $locale = app()->getLocale();
+
+        $categories = Activity::with(['translations' => function ($query) use ($locale) {
+            $query->where('locale', $locale);
+        }])->get();
+
+        $categories = $categories->map(function ($category) {
+            $translation = $category->translations->first(); // First translation for the locale
+            return [
+                'id' => $category->id,
+                'name' => $translation?->name ?? $category->name,
+                'description' => $translation?->description ?? '',
+            ];
+        });
+
+        return response()->json($categories);
     }
 
     /**

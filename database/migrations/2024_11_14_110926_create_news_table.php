@@ -13,19 +13,25 @@ return new class extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->timestamps();
+        });
+
+        Schema::create('news_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('news_id')->constrained('news')->cascadeOnDelete();
+            $table->string('locale');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('image')->nullable();
-            $table->foreignId('category_id')->constrained();
             $table->timestamps();
+
+            $table->unique(['news_id', 'locale'], 'news_trans_unique');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        Schema::dropIfExists('news_trans');
         Schema::dropIfExists('news');
     }
 };

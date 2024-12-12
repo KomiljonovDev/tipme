@@ -17,13 +17,13 @@ class NewsFactory extends Factory
      * @return array<string, mixed>
      */
     use HasFactory;
-    public function definition(): array
+
+    public function definition()
     {
         return [
-            'title' => $this->faker->title(),
-            'description' => $this->faker->paragraph(),
-            'image' => $this->faker->imageUrl(),
-            'category_id'=>Category::factory(),
+            'category_id' => Category::factory(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

@@ -13,17 +13,24 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
+        });
+
+        Schema::create('activity_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('activity_id')->constrained('activities')->cascadeOnDelete();
+            $table->string('locale');
             $table->string('name');
             $table->text('description');
             $table->timestamps();
+
+            $table->unique(['activity_id', 'locale'], 'act_trans_unique');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        Schema::dropIfExists('activity_trans');
         Schema::dropIfExists('activities');
     }
 };

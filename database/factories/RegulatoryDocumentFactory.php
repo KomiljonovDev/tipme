@@ -16,10 +16,11 @@ class RegulatoryDocumentFactory extends Factory
      * @return array<string, mixed>
      */
     use HasFactory;
-    public function definition(): array
+    public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

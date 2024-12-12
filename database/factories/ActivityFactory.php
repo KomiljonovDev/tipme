@@ -8,19 +8,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Activity>
  */
-class ActivityFactory extends Factory
-{
+class ActivityFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
     use HasFactory;
-    public function definition(): array
-    {
-        return [
-            'name' => $this->faker->name(),
-            'description' => $this->faker->text(),
-        ];
+
+    public function definition () {
+        return ['created_at' => now(), 'updated_at' => now(),];
     }
 }

@@ -13,16 +13,24 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
+        });
+
+        Schema::create('category_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->string('locale');
             $table->string('name');
             $table->timestamps();
+
+            $table->unique(['category_id', 'locale'], 'cat_trans_unique');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
+        Schema::dropIfExists('category_trans');
         Schema::dropIfExists('categories');
     }
 };

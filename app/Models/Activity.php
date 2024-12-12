@@ -12,4 +12,8 @@ class Activity extends Model
         'name',
         'description'
     ];
+    public function translations()
+    {
+        return $this->hasMany(ActivityTranslation::class);
+    }
 }

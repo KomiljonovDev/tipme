@@ -11,4 +11,9 @@ class Category extends Model
     protected $fillable = [
         'name',
     ];
+    public $translatedAttributes = ['name'];
+    public function translations()
+    {
+        return $this->hasMany(CategoryTranslation::class);
+    }
 }

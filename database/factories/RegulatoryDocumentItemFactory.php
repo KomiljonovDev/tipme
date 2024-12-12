@@ -17,12 +17,13 @@ class RegulatoryDocumentItemFactory extends Factory
      * @return array<string, mixed>
      */
     use HasFactory;
-    public function definition(): array
+    public function definition()
     {
         return [
             'regulatory_document_id' => RegulatoryDocument::factory(),
-            'name' => $this->faker->name(),
-            'document'=>$this->faker->url()
+            'document'=> $this->faker->url,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

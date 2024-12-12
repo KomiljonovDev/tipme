@@ -16,4 +16,8 @@ class News extends Model
     public function category () {
         return $this->belongsTo(Category::class);
     }
+    public function translations()
+    {
+        return $this->hasMany(NewsTranslation::class);
+    }
 }

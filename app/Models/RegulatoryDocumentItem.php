@@ -16,4 +16,8 @@ class RegulatoryDocumentItem extends Model
     public function regulatoryDocument () {
         return $this->belongsTo(RegulatoryDocument::class);
     }
+    public function translations()
+    {
+        return $this->hasMany(RegulatoryDocumentItemTranslation::class);
+    }
 }
