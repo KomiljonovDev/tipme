@@ -18,16 +18,14 @@ class CategoryController extends Controller
             $query->where('locale', $locale);
         }])->get();
 
-        $categories = $categories->map(function ($category) {
-            $translation = $category->translations->first(); // First translation for the locale
+        return $categories->map(function ($category) {
+            $translation = $category->translations->first();
             return [
                 'id' => $category->id,
                 'name' => $translation?->name ?? $category->name,
                 'description' => $translation?->description ?? '',
             ];
         });
-
-        return response()->json($categories);
     }
 
     /**
@@ -51,7 +49,16 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $locale = app()->getLocale();
+
+        return Category::with([
+            'news.translations' => function ($query) use ($locale) {
+                $query->where('locale', $locale);
+            },
+            'translations' => function ($query) use ($locale) {
+                $query->where('locale', $locale);
+            },
+        ])->findOrFail($category->id);
     }
 
     /**

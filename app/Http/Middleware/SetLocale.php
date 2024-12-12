@@ -13,13 +13,19 @@ class SetLocale
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    protected const ALLOWED_LOCALIZATIONS = ['uz','oz','en', 'ru'];
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
     {
-        $locale = $request->segment(2); // Assuming 'api/{lang}/{resource}'
-
-        if (in_array($locale, ['en', 'ru', 'uz', 'oz'])) {
-            app()->setLocale($locale);
-        }
+        $localization = $request->header('Accept-Language');
+        $localization = in_array($localization, self::ALLOWED_LOCALIZATIONS, true) ? $localization : 'uz';
+        app()->setLocale($localization);
 
         return $next($request);
     }

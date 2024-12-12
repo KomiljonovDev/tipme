@@ -24,16 +24,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Create categories with translations
-        Category::factory()
-            ->count(5) // Number of categories to create
-            ->create()
-            ->each(function ($category) {
-                $category->translations()->saveMany([
-                    new CategoryTranslation(['locale' => 'en', 'name' => 'Category Name EN']),
-                    new CategoryTranslation(['locale' => 'ru', 'name' => 'Category Name RU']),
-                    new CategoryTranslation(['locale' => 'uz', 'name' => 'Category Name UZ']),
+        Category::factory(10)->create()->each(function ($category) {
+            // Create translations for each category
+            foreach (['en', 'ru', 'uz'] as $locale) {
+                CategoryTranslation::factory()->create([
+                    'category_id' => $category->id,
+                    'locale' => $locale,
                 ]);
-            });
+            }
+        });
 
         // Create news with translations
         News::factory()

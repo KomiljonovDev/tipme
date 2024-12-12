@@ -16,4 +16,13 @@ class Category extends Model
     {
         return $this->hasMany(CategoryTranslation::class);
     }
+
+    public function translationByLocale($locale)
+    {
+        return $this->translations()->where('locale', $locale);
+    }
+    public function news()
+    {
+        return $this->hasMany(News::class);
+    }
 }
