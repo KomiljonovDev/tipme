@@ -13,7 +13,7 @@ class CategoryTranslationFactory extends Factory
     {
         return [
             'category_id' => \App\Models\Category::factory(),
-            'locale' => $this->faker->locale,
+            'locale' => $this->faker->randomElement(['en', 'ru', 'uz', 'oz']),
             'name' => $this->faker->word,
             'created_at' => now(),
             'updated_at' => now(),

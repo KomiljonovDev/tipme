@@ -10,19 +10,19 @@ class NewsController extends Controller
     public function index(){
         $locale = app()->getLocale();
 
-        $categories = News::with(['translations' => function ($query) use ($locale) {
+        $news = News::with(['translations' => function ($query) use ($locale) {
             $query->where('locale', $locale);
         }])->get();
 
-        $categories = $categories->map(function ($category) {
+        $news = $news->map(function ($category) {
             $translation = $category->translations->first(); // First translation for the locale
             return [
                 'id' => $category->id,
-                'name' => $translation?->name ?? $category->name,
+                'title' => $translation?->title,
                 'description' => $translation?->description ?? '',
             ];
         });
 
-        return response()->json($categories);
+        return response()->json($news);
     }
 }

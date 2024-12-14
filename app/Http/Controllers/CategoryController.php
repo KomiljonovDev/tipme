@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
+use App\Http\Traits\MergerTranslationKey;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    use MergerTranslationKey;
     /**
      * Display a listing of the resource.
      */
@@ -22,8 +25,7 @@ class CategoryController extends Controller
             $translation = $category->translations->first();
             return [
                 'id' => $category->id,
-                'name' => $translation?->name ?? $category->name,
-                'description' => $translation?->description ?? '',
+                'name' => $translation?->name,
             ];
         });
     }
@@ -51,7 +53,7 @@ class CategoryController extends Controller
     {
         $locale = app()->getLocale();
 
-        return Category::with([
+        $category = Category::with([
             'news.translations' => function ($query) use ($locale) {
                 $query->where('locale', $locale);
             },
@@ -59,7 +61,23 @@ class CategoryController extends Controller
                 $query->where('locale', $locale);
             },
         ])->findOrFail($category->id);
+
+        $transformed = $category->toArray();
+
+        // Merge category translations into the category itself
+        $transformed = array_merge($transformed, $this->mergeTranslations($category->translations));
+
+        // Merge news translations into each news item
+        foreach ($transformed['news'] as &$news) {
+            $news = array_merge($news, $this->mergeTranslations($news['translations']));
+            unset($news['translations']); // Remove translations key from each news item
+        }
+
+        unset($transformed['translations']); // Remove translations key from category
+        return $transformed;
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

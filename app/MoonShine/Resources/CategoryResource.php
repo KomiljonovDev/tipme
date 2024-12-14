@@ -7,6 +7,7 @@ namespace App\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 
+use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
@@ -33,6 +34,7 @@ class CategoryResource extends ModelResource
                 ID::make()->sortable(),
                 Text::make('name')->required(),
             ]),
+            HasMany::make(label: 'Rasmlar', relationName: 'translation', resource: new NewsResource())->onlyLink(),
         ];
     }
 

@@ -63,12 +63,12 @@ class ActivityResource extends ModelResource
     public function rules(Model $item): array
     {
         return [
-            'name.en' => ['required', 'string', 'max:255'],
-            'name.ru' => ['required', 'string', 'max:255'],
-            'name.uz' => ['required', 'string', 'max:255'],
-            'description.en' => ['required', 'string'],
-            'description.ru' => ['required', 'string'],
-            'description.uz' => ['required', 'string'],
+            'name_en' => ['required', 'string', 'max:255'],
+            'name_ru' => ['required', 'string', 'max:255'],
+            'name_uz' => ['required', 'string', 'max:255'],
+            'description_en' => ['required', 'string'],
+            'description_ru' => ['required', 'string'],
+            'description_uz' => ['required', 'string'],
         ];
     }
 }

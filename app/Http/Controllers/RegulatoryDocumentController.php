@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\MergerTranslationKey;
 use App\Models\RegulatoryDocument;
 use Illuminate\Http\Request;
 
 class RegulatoryDocumentController extends Controller
 {
+    use MergerTranslationKey;
     /**
      * Display a listing of the resource.
      */
@@ -14,20 +16,18 @@ class RegulatoryDocumentController extends Controller
     {
         $locale = app()->getLocale();
 
-        $categories = RegulatoryDocument::with(['translations' => function ($query) use ($locale) {
+        $regulatoryDocument = RegulatoryDocument::with(['translations' => function ($query) use ($locale) {
             $query->where('locale', $locale);
-        }, 'regulatory_document_items'])->get();
-
-        $categories = $categories->map(function ($category) {
+        }])->get();
+        $regulatoryDocument = $regulatoryDocument->map(function ($category) {
             $translation = $category->translations->first(); // First translation for the locale
             return [
                 'id' => $category->id,
                 'name' => $translation?->name ?? $category->name,
-                'description' => $translation?->description ?? '',
             ];
         });
 
-        return response()->json($categories);
+        return response()->json($regulatoryDocument);
     }
 
     /**
@@ -51,7 +51,30 @@ class RegulatoryDocumentController extends Controller
      */
     public function show(RegulatoryDocument $regulatoryDocument)
     {
-        //
+        $locale = app()->getLocale();
+
+        $regulatoryDocument = RegulatoryDocument::with([
+            'regulatory_document_items.translations' => function ($query) use ($locale) {
+                $query->where('locale', $locale);
+            },
+            'translations' => function ($query) use ($locale) {
+                $query->where('locale', $locale);
+            },
+        ])->findOrFail($regulatoryDocument->id);
+
+        $transformed = $regulatoryDocument->toArray();
+
+        // Merge regulatoryDocument translations into the regulatoryDocument itself
+        $transformed = array_merge($transformed, $this->mergeTranslations($regulatoryDocument->translations));
+
+        // Merge news translations into each news item
+        foreach ($transformed['regulatory_document_items'] as &$news) {
+            $news = array_merge($news, $this->mergeTranslations($news['translations']));
+            unset($news['translations']); // Remove translations key from each news item
+        }
+
+        unset($transformed['translations']); // Remove translations key from regulatoryDocument
+        return $transformed;
     }
 
     /**

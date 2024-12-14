@@ -11,7 +11,7 @@ class NewsTranslationFactory extends Factory
     {
         return [
             'news_id' => \App\Models\News::factory(),
-            'locale' => $this->faker->locale,
+            'locale' => $this->faker->randomElement(['en', 'ru', 'uz', 'oz']),
             'title' => $this->faker->sentence,
             'description' => $this->faker->text,
             'created_at' => now(),

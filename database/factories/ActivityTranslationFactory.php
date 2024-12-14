@@ -14,7 +14,7 @@ class ActivityTranslationFactory extends Factory
     {
         return [
             'activity_id' => \App\Models\Activity::factory(),
-            'locale' => $this->faker->locale,
+            'locale' => $this->faker->randomElement(['en', 'ru', 'uz', 'oz']),
             'name' => $this->faker->word,
             'description' => $this->faker->text,
             'created_at' => now(),

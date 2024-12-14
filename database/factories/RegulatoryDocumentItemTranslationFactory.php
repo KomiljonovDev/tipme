@@ -18,9 +18,9 @@ class RegulatoryDocumentItemTranslationFactory extends Factory
     {
         return [
             'regulatory_document_item_id' => \App\Models\RegulatoryDocumentItem::factory(),
-            'locale' => $this->faker->locale,
+            'locale' => $this->faker->randomElement(['en', 'ru', 'uz', 'oz']),
             'name' => $this->faker->sentence,
-            'document' => $this->faker->url,
+//            'document' => $this->faker->url,
             'created_at' => now(),
             'updated_at' => now(),
         ];

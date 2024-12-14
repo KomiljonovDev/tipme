@@ -17,6 +17,9 @@ class ActivityFactory extends Factory {
     use HasFactory;
 
     public function definition () {
-        return ['created_at' => now(), 'updated_at' => now(),];
+        return [
+            'created_at' => now(),
+            'updated_at' => now()
+        ];
     }
 }

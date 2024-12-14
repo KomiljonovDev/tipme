@@ -9,11 +9,10 @@ use App\Models\News;
 
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Relationships\BelongsTo;
-use MoonShine\Fields\Text;
-use MoonShine\Fields\Textarea;
+use MoonShine\Fields\Relationships\HasMany;
+use MoonShine\Fields\ID;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
-use MoonShine\Fields\ID;
 use MoonShine\Fields\Field;
 use MoonShine\Components\MoonShineComponent;
 
@@ -34,12 +33,10 @@ class NewsResource extends ModelResource
         return [
             Block::make([
                 ID::make()->sortable()->required(),
-                BelongsTo::make('category'),
-                Text::make('Sarlavha','title')->required(),
-                Textarea::make('Description', 'description')
-                    ->hideOnIndex()->required(),
-                Image::make('Rasm', 'image')->required()
+                BelongsTo::make('Category', 'category')->required(),
+                Image::make('Image', 'image')->required(),
             ]),
+//            HasMany::make('News', 'translation')->required(),
         ];
     }
 
@@ -51,6 +48,8 @@ class NewsResource extends ModelResource
      */
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'image' => ['required', 'image', 'max:2048'],
+        ];
     }
 }
