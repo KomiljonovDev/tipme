@@ -4,57 +4,37 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Illuminate\Support\ServiceProvider;
+use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
+use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
+use App\MoonShine\Resources\MoonShineUserResource;
+use App\MoonShine\Resources\MoonShineUserRoleResource;
 use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\CategoryTranslationResource;
-use MoonShine\Providers\MoonShineApplicationServiceProvider;
-use MoonShine\Menu\MenuItem;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Menu\MenuElement;
-use MoonShine\Pages\Page;
-use Closure;
 
-class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
+class MoonShineServiceProvider extends ServiceProvider
 {
     /**
-     * @return list<ResourceContract>
+     * @param  MoonShine  $core
+     * @param  MoonShineConfigurator  $config
+     *
      */
-    protected function resources(): array
+    public function boot(CoreContract $core, ConfiguratorContract $config): void
     {
-        return [
-            new CategoryTranslationResource()
-        ];
-    }
+        // $config->authEnable();
 
-    /**
-     * @return list<Page>
-     */
-    protected function pages(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return Closure|list<MenuElement>
-     */
-    protected function menu(): array
-    {
-        return [
-            MenuItem::make(
-                static fn() => __("Kategoriyalar"),
-                new CategoryResource()
-            ),
-
-            MenuItem::make('Documentation', 'https://moonshine-laravel.com/docs')
-                ->badge(fn() => 'Check')
-                ->blank(),
-        ];
-    }
-
-    /**
-     * @return Closure|array{css: string, colors: array, darkColors: array}
-     */
-    protected function theme(): array
-    {
-        return [];
+        $core
+            ->resources([
+                MoonShineUserResource::class,
+                MoonShineUserRoleResource::class,
+                CategoryResource::class,
+                CategoryTranslationResource::class,
+            ])
+            ->pages([
+                ...$config->getPages(),
+            ])
+        ;
     }
 }

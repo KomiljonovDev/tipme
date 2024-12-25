@@ -1,111 +1,97 @@
 <?php
 
-use MoonShine\Exceptions\MoonShineNotFoundException;
-use MoonShine\Forms\LoginForm;
-use MoonShine\Http\Middleware\Authenticate;
-use MoonShine\Http\Middleware\SecurityHeadersMiddleware;
-use MoonShine\Models\MoonshineUser;
-use MoonShine\MoonShineLayout;
-use MoonShine\Pages\ProfilePage;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
+use MoonShine\Laravel\Forms\FiltersForm;
+use MoonShine\Laravel\Forms\LoginForm;
+use MoonShine\Laravel\Http\Middleware\Authenticate;
+use MoonShine\Laravel\Http\Middleware\ChangeLocale;
+use MoonShine\Laravel\Layouts\AppLayout;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Pages\Dashboard;
+use MoonShine\Laravel\Pages\ErrorPage;
+use MoonShine\Laravel\Pages\LoginPage;
+use MoonShine\Laravel\Pages\ProfilePage;
 
 return [
-    'dir' => 'app/MoonShine',
-    'namespace' => 'App\MoonShine',
-
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
-    'logo' => env('MOONSHINE_LOGO'),
-    'logo_small' => env('MOONSHINE_LOGO_SMALL'),
+    'logo' => 'vendor/moonshine/logo.svg',
+    'logo_small' => 'vendor/moonshine/logo-small.svg',
 
-    'route' => [
-        'domain' => env('MOONSHINE_URL', ''),
-        'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
-        'single_page_prefix' => 'page',
-        'index' => 'moonshine.index',
-        'middlewares' => [
-            SecurityHeadersMiddleware::class,
-        ],
-        'notFoundHandler' => MoonShineNotFoundException::class,
-    ],
 
+    // Default flags
     'use_migrations' => true,
     'use_notifications' => true,
-    'use_theme_switcher' => true,
+    'use_database_notifications' => true,
 
-    'layout' => MoonShineLayout::class,
+    // Routing
+    'domain' => env('MOONSHINE_DOMAIN'),
+    'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
+    'page_prefix' => env('MOONSHINE_PAGE_PREFIX', 'page'),
+    'resource_prefix' => env('MOONSHINE_RESOURCE_PREFIX', 'resource'),
+    'home_route' => 'moonshine.index',
 
-    'disk' => 'public',
+    // Error handling
+    'not_found_exception' => MoonShineNotFoundException::class,
 
-    'disk_options' => [],
-
-    'cache' => 'file',
-
-    'assets' => [
-        'js' => [
-            'script_attributes' => [
-                'defer',
-            ]
-        ],
-        'css' => [
-            'link_attributes' => [
-                'rel' => 'stylesheet',
-            ]
-        ]
+    // Middleware
+    'middleware' => [
+        EncryptCookies::class,
+        AddQueuedCookiesToResponse::class,
+        StartSession::class,
+        AuthenticateSession::class,
+        ShareErrorsFromSession::class,
+        VerifyCsrfToken::class,
+        SubstituteBindings::class,
+        ChangeLocale::class,
     ],
 
+    // Storage
+    'disk' => 'public',
+    'disk_options' => [],
+    'cache' => 'file',
+
+    // Authentication and profile
+    'auth' => [
+        'enabled' => true,
+        'guard' => 'moonshine',
+        'model' => MoonshineUser::class,
+        'middleware' => Authenticate::class,
+        'pipelines' => [],
+    ],
+
+    // Authentication and profile
+    'user_fields' => [
+        'username' => 'email',
+        'password' => 'password',
+        'name' => 'name',
+        'avatar' => 'avatar',
+    ],
+
+    // Layout, pages, forms
+    'layout' => App\MoonShine\Layouts\MoonShineLayout::class,
+
     'forms' => [
-        'login' => LoginForm::class
+        'login' => LoginForm::class,
+        'filters' => FiltersForm::class,
     ],
 
     'pages' => [
         'dashboard' => App\MoonShine\Pages\Dashboard::class,
-        'profile' => ProfilePage::class
+        'profile' => ProfilePage::class,
+        'login' => LoginPage::class,
+        'error' => ErrorPage::class,
     ],
 
-    'model_resources' => [
-        'default_with_import' => true,
-        'default_with_export' => true,
-    ],
-
-    'auth' => [
-        'enable' => true,
-        'middleware' => Authenticate::class,
-        'fields' => [
-            'username' => 'email',
-            'password' => 'password',
-            'name' => 'name',
-            'avatar' => 'avatar',
-        ],
-        'guard' => 'moonshine',
-        'guards' => [
-            'moonshine' => [
-                'driver' => 'session',
-                'provider' => 'moonshine',
-            ],
-        ],
-        'providers' => [
-            'moonshine' => [
-                'driver' => 'eloquent',
-                'model' => MoonshineUser::class,
-            ],
-        ],
-        'pipelines' => [],
-    ],
+    // Localizations
+    'locale' => 'en',
     'locales' => [
-        'en',
-        'ru',
-    ],
-
-    'global_search' => [
-        // User::class
-    ],
-
-    'tinymce' => [
-        'file_manager' => false, // or 'laravel-filemanager' prefix for lfm
-        'token' => env('MOONSHINE_TINYMCE_TOKEN', ''),
-        'version' => env('MOONSHINE_TINYMCE_VERSION', '6'),
-    ],
-
-    'socialite' => [
-        // 'driver' => 'path_to_image_for_button'
+        // en
     ],
 ];
