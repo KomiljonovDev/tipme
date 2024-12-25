@@ -15,6 +15,8 @@ use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\CategoryTranslationResource;
 use App\MoonShine\Resources\ActivityResource;
 use App\MoonShine\Resources\ActivityTranslationResource;
+use App\MoonShine\Resources\NewsResource;
+use App\MoonShine\Resources\NewsTranslationResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -35,6 +37,8 @@ class MoonShineServiceProvider extends ServiceProvider
                 CategoryTranslationResource::class,
                 ActivityResource::class,
                 ActivityTranslationResource::class,
+                NewsResource::class,
+                NewsTranslationResource::class,
             ])
             ->pages([
                 ...$config->getPages(),

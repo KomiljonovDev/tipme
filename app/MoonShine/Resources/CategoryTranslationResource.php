@@ -34,7 +34,6 @@ class CategoryTranslationResource extends ModelResource
         return [
             Text::make('locale'),
             Text::make('name'),
-//            BelongsTo::make('Category', 'category', resource: CategoryResource::class),
         ];
     }
     protected function detailFields(): iterable

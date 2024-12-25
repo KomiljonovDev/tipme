@@ -35,6 +35,8 @@ use MoonShine\MenuManager\MenuItem;
 use App\MoonShine\Resources\CategoryTranslationResource;
 use App\MoonShine\Resources\ActivityResource;
 use App\MoonShine\Resources\ActivityTranslationResource;
+use App\MoonShine\Resources\NewsResource;
+use App\MoonShine\Resources\NewsTranslationResource;
 
 final class MoonShineLayout extends AppLayout
 {
@@ -53,6 +55,8 @@ final class MoonShineLayout extends AppLayout
             MenuItem::make('CategoryTranslations', CategoryTranslationResource::class),
             MenuItem::make('Activities', ActivityResource::class),
             MenuItem::make('ActivityTranslations', ActivityTranslationResource::class),
+            MenuItem::make('News', NewsResource::class),
+            MenuItem::make('NewsTranslations', NewsTranslationResource::class),
         ];
     }
 

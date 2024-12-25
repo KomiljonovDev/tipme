@@ -31,6 +31,7 @@ class CategoryResource extends ModelResource
     protected function indexFields(): iterable
     {
         return [
+            ID::make(),
             HasMany::make('Tarjimalar', 'translations', resource: CategoryTranslationResource::class)
         ];
     }

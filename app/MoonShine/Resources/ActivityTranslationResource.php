@@ -34,7 +34,6 @@ class ActivityTranslationResource extends ModelResource
             Text::make('locale'),
             Text::make('name'),
             Textarea::make('description'),
-//            BelongsTo::make('Aktivitiy', 'activity', resource: ActivityResource::class),
         ];
     }
 
@@ -58,11 +57,7 @@ class ActivityTranslationResource extends ModelResource
      */
     protected function detailFields(): iterable
     {
-        return [
-            Text::make('locale'),
-            Text::make('name'),
-            Textarea::make('description'),
-        ];
+        return $this->indexFields();
     }
 
     /**
