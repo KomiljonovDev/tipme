@@ -13,6 +13,8 @@ use App\MoonShine\Resources\MoonShineUserResource;
 use App\MoonShine\Resources\MoonShineUserRoleResource;
 use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\CategoryTranslationResource;
+use App\MoonShine\Resources\ActivityResource;
+use App\MoonShine\Resources\ActivityTranslationResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,8 @@ class MoonShineServiceProvider extends ServiceProvider
                 MoonShineUserRoleResource::class,
                 CategoryResource::class,
                 CategoryTranslationResource::class,
+                ActivityResource::class,
+                ActivityTranslationResource::class,
             ])
             ->pages([
                 ...$config->getPages(),

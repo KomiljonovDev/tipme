@@ -31,14 +31,14 @@ class CategoryResource extends ModelResource
     protected function indexFields(): iterable
     {
         return [
-            ID::make(),
             HasMany::make('Tarjimalar', 'translations', resource: CategoryTranslationResource::class)
-            ->relatedLink(),
         ];
     }
     protected function detailFields(): iterable
     {
-        return $this->indexFields();
+        return [
+            HasMany::make('Tarjimalar', 'translations', resource: CategoryTranslationResource::class)
+        ];
     }
     protected function formFields(): iterable
     {
@@ -46,7 +46,6 @@ class CategoryResource extends ModelResource
             ID::make(),
             HasMany::make('Tarjimalar', 'translations', resource: CategoryTranslationResource::class)
                 ->creatable(button: ActionButton::make("Til qo'shish", ''))
-                ->relatedLink(),
         ];
     }
     protected function pages(): array

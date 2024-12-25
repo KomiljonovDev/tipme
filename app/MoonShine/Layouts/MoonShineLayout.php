@@ -33,6 +33,8 @@ use MoonShine\UI\Components\{Breadcrumbs,
 use App\MoonShine\Resources\CategoryResource;
 use MoonShine\MenuManager\MenuItem;
 use App\MoonShine\Resources\CategoryTranslationResource;
+use App\MoonShine\Resources\ActivityResource;
+use App\MoonShine\Resources\ActivityTranslationResource;
 
 final class MoonShineLayout extends AppLayout
 {
@@ -49,6 +51,8 @@ final class MoonShineLayout extends AppLayout
             ...parent::menu(),
             MenuItem::make('Categories', CategoryResource::class),
             MenuItem::make('CategoryTranslations', CategoryTranslationResource::class),
+            MenuItem::make('Activities', ActivityResource::class),
+            MenuItem::make('ActivityTranslations', ActivityTranslationResource::class),
         ];
     }
 
