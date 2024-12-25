@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CategoryResource;
 use App\Http\Traits\MergerTranslationKey;
 use App\Models\Category;
 use Illuminate\Http\Request;

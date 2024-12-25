@@ -16,7 +16,7 @@ class CategoryTranslation extends Model
         'locale',
         'name',
     ];
-
+    protected $with = ['category'];
     /**
      * Get the category that owns the translation.
      */

@@ -14,12 +14,12 @@ class ActivityController extends Controller
     {
         $locale = app()->getLocale();
 
-        $categories = Activity::with(['translations' => function ($query) use ($locale) {
+        $activities = Activity::with(['translations' => function ($query) use ($locale) {
             $query->where('locale', $locale);
         }])->get();
 
-        $categories = $categories->map(function ($category) {
-            $translation = $category->translations->first(); // First translation for the locale
+        $activities = $activities->map(function ($category) {
+            $translation = $category->translations->first();
             return [
                 'id' => $category->id,
                 'name' => $translation?->name ?? $category->name,
@@ -27,7 +27,7 @@ class ActivityController extends Controller
             ];
         });
 
-        return response()->json($categories);
+        return response()->json($activities);
     }
 
     /**
